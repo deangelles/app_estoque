@@ -13,14 +13,15 @@ class ProdutoDAO extends Conexao
 {
     public function inserir($produto)
     {
-        $sql = "insert into protudos (descricao, quantidade, valor, validade) values (:descricao, :quantidade,:valor,:validade)";
+        $sql = "insert into produtos (descricao, quantidade, valor, validade) values (:descricao, :quantidade, :valor, :validade)";
         try{
             $i = $this->conexao->prepare($sql);
             $i->bindValue(":descricao", $produto->getDescricao ());
-            $i->bindValue(":quantidade", $produto->getquantidade ());
-            $i->bindValue(":valor", $produto->getvalor ());
-            $i->bindValue(":validade", $produto->getvalidade ());
-
+            $i->bindValue(":quantidade", $produto->getQuantidade ());
+            $i->bindValue(":valor", $produto->getValor ());
+            $i->bindValue(":validade", $produto->getValidade ());
+            $i->execute();
+            return true;
         } catch (\PDOException $e){
             echo "<div class='alert-danger'>{$e->getMessage()}</div>";
     }

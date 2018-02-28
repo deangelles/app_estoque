@@ -25,7 +25,7 @@ class Conexao
     {
 
         $this->conexao = new \PDO("mysql:dbname={$this->database};host={$this->host}", "{$this->user}", "{$this->senha}");
-        $this->conexao->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ATTR_ERRMODE);
+        $this->conexao->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 
     }
