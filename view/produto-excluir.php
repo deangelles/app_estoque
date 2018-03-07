@@ -2,6 +2,10 @@
 
 
 include  '../vendor/autoload.php';
+
+$uDAO = new \App\DAO\UsuarioDAO();
+$uDAO->verificar();
+
 $p = new \App\Model\Produto();
 $p->setId($_GET['id']);
 
