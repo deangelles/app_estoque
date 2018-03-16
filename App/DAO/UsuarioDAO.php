@@ -47,4 +47,20 @@ class UsuarioDAO extends Conexao
 
     }
 
+
+    public function alterar($Usuario){
+        $sql = "update usuarios set senha = :senha WHERE id = :id";
+        try{
+            $p = $this->conexao->prepare($sql);
+            $p->bindValue(":senha", $Usuario->getsenha());
+
+            $p->bindValue(":id", $Usuario->getId());
+            $p->execute();
+            return true;
+        } catch (\PDOException $e){
+            echo "<div class='alert alert-danger'>{$e->getMessage()}</div>div>";
+
+        }
+    }
+
 }

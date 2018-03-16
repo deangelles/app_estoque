@@ -1,41 +1,27 @@
 <?php
+$titulo = "Usuário";
+include 'cabecalho.php';
 
-//Mude aqui as Menssagens
-$mensagem = "Senha alterada com sucesso"; //Menssagem exibida se a senha for alterada com sucesso
-$mensagem1 = "Error ao alterar a senha"; // Mensagem de error caso a senha não foi alterada
+if($_POST){
+    $p2 = new \App\Model\Usuario();
+    $p2->setId($_POST['id']);
+    $p2->setSenha($_POST['senha']);
+    
+    $p2DAO = new \App\DAO\ProdutoDAO();
+    if ($p2DAO->alterar($p2))
+        header("Location: produto-pesquisar.php?msg=2");
 
-
-if(isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['nsenha']) && isset($_POST['type']) && $_POST['type'] == "1") {
-	require('SQL.php');
-	$login = anti_injection($_POST['email']);
-	$senha = md5(anti_injection($_POST['senha']));
-	$nsenha = md5(anti_injection($_POST['nsenha']));
-	$query = mysql_query("SELECT * FROM usuarios WHERE email='$email' AND senha='$senha'") or die(mysql_error());
-	$n_rows = mysql_num_rows($query);
-	$row = mysql_fetch_assoc($query);
-	if($n_rows > "0"){
-		$update = mysql_query("UPDATE usuarios SET senha='$nsenha' WHERE email='$email'") or die(mysql_error());
-		echo "<font face=\"verdana\" color=\"#FF0000\"><b>" . $mensagem . "</b></font><br>";
-	} else {
-		echo "<font face=\"verdana\" color=\"#FF0000\"><b>" . $mensagem1 . "</b></font><br>";
-	}
 }
 
-if(isset($_POST['email']) && isset($_POST['nsenha']) && isset($_POST['type']) && $_POST['type'] == "2") {
-	require('SQL.php');
-	$email = anti_injection($_POST['email']);
-	$nsenha = md5(anti_injection($_POST['nsenha']));
-	$query = mysql_query("SELECT * FROM usuarios WHERE email='$login' AND email='$email'") or die(mysql_error());
-	$n_rows = mysql_num_rows($query);
-	$row = mysql_fetch_assoc($query);
-	if($n_rows > "0"){
-		$update = mysql_query("UPDATE usuarios SET senha='$nsenha' WHERE login='$login'") or die(mysql_error());
-		echo "<font face=\"verdana\" color=\"#FF0000\"><b>" . $mensagem . "</b></font><br>";
-	} else {
-		echo "<font face=\"verdana\" color=\"#FF0000\"><b>" . $mensagem1 . "</b></font><br>";
-	}
-}
+
+$p = new \App\Model\Produto();
+isset($_GET) ? $p->setId($_GET['id']) : $p->setId($_POST['id']);
+
+$pDAO = new \App\DAO\ProdutoDAO();
+$resultado = $pDAO->pesquisarUm($p);
+
 ?>
+<h1>Alterar senha</h1>
 <html>
 <head>
 <title>Mudar Senha</title>
@@ -43,11 +29,11 @@ if(isset($_POST['email']) && isset($_POST['nsenha']) && isset($_POST['type']) &&
 <body>
 
 <form name="form1" id="form1" action="mudar_senha.php" method="POST">
-<center>
+
 <table border="0" width="100%">
 <tr>
 <td>Login:</td>
-<td><input type="text" name="login" id="login">
+<td><input type="text" name="email" id="email">
 </td>
 </tr>
 <tr>
@@ -65,20 +51,13 @@ if(isset($_POST['email']) && isset($_POST['nsenha']) && isset($_POST['type']) &&
 <td><input type="text" name="email" id="email">
 </td>
 </tr>
-<tr>
-<td>Tipo:</td>
-<td><input name="type" type="radio" value="1">
-  Selecione aqui caso voc&ecirc; saiba sua senha antiga.<br>
-  <input name="type" type="radio" value="2">
-  Selecione aqui caso voc&ecirc; n&atilde;o saiba  sua senha antiga.</td>
-</tr>
+
 <tr>
 <td></td>
 <td><input name="submit" type="submit" value="Mudar Senha"></td>
 </tr>
 </table>
-</center>
+
 </form>
 </body>
 </html>
-[/b]
